@@ -8,17 +8,31 @@ export default class Content extends Component {
 		this.state={
 			data:[],
 			isLoaded:false,
-			cod:[],
+			sqry:'kerala',
 			lat:0,
-			lgi:0
+			lgi:0,
+			usrlang:'en'
 		}
 		let qry='technology';
 	}
+
+	changeText = (e) => {
+		this.setState({
+			sqry:e.target.value
+		});
+	}
+
+	getNews = (e) => {
+		e.preventDefault();
+		this.newsData();
+	}
 	
 	newsData = () => {
+		
 		const token ='f1d7c94e298e120f58159223b3111be9';
-		let qry='messi';
-		fetch(`https://gnews.io/api/v2/?q=kerala&token=f1d7c94e298e120f58159223b3111be9`)
+		let qry=this.state.sqry;
+		let la = this.state.usrlang
+		fetch(`https://gnews.io/api/v2/?q=${qry}&lang=${la}&token=${token}`)
 		.then((response)=>{return response.json();})
 		.then((news)=>{this.setState({
 		  isLoaded:true,
@@ -44,11 +58,18 @@ export default class Content extends Component {
 		} else {
 				console.error("Geolocation is not supported by this browser!");
 		}
+		let lan = navigator.language || navigator.userLanguage;
+		let str = lan.split("-");
+		this.setState({
+			usrlang:str[0]
+		});
+		
 		}
 
 	componentDidMount(){
-		this.newsData();
+		
 		this.getLocation();
+		this.newsData();
 		// this.setState({
 		// 	isLoaded:true,
 		// 	lat:locat.coords.latitude,
@@ -59,11 +80,17 @@ export default class Content extends Component {
 	}
 
 	render(){
-
+		
+		
 		return(
 			<div>
 				<p>The content goes hear</p>
-				<Weather />
+				<h2>user Lang: {this.state.usrlang}</h2>
+				<Weather latt={this.state.lat} long={this.state.lgi}/>
+				<form onSubmit={this.getNews}>
+					<input type='text' onChange={this.changeText} />
+					<button>search</button>
+				</form>
 				<Ncard />
 				<h2>Latitude:{this.state.lat}</h2>
 				{this.state.data.map((item,index) => {return (<h2 key={index}>{item.title}</h2>);})}

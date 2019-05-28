@@ -8,7 +8,8 @@ export default class Weather extends Component {
             main:[],
             wind:[],
             location:'india',
-            sys:[]
+            sys:[],
+            isLoaded:false
         }
     }
     weatherApi = () => {
@@ -20,6 +21,7 @@ export default class Weather extends Component {
 		.then((response)=>{return response.json();})
         .then((locat)=>{console.log(locat);
             this.setState({
+                
                 weather:locat.weather,
                 main:locat.main,
                 wind:locat.wind,
@@ -39,9 +41,9 @@ export default class Weather extends Component {
             <div>
                 <h2>Weather</h2>
                 <p>your current weather info</p>
-                <h3>Temp: {(this.state.main.temp)-273.15}</h3>
-                <h3>City {this.state.location}</h3>
-                <h3>country {this.state.sys.country}</h3>
+                <h3>Temp: {Math.floor(((this.state.main.temp)-273.15)*100)/100}&deg;C</h3>
+                <h3>City : {this.state.location}</h3>
+                <h3>Country : {this.state.sys.country}</h3>
             </div>
         );
     }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Weather from './weather';
 import Ncard from './ncard';
+import { Jumbotron, Button,Form,Row,Col,Spinner} from 'react-bootstrap';
+
 
 export default class Content extends Component {
 	constructor(){
@@ -24,6 +26,9 @@ export default class Content extends Component {
 
 	getNews = (e) => {
 		e.preventDefault();
+		this.setState({
+			isLoaded:false
+		});
 		this.newsData();
 	}
 	
@@ -34,9 +39,10 @@ export default class Content extends Component {
 		let la = this.state.usrlang
 		fetch(`https://gnews.io/api/v2/?q=${qry}&lang=${la}&token=${token}`)
 		.then((response)=>{return response.json();})
-		.then((news)=>{this.setState({
-		  isLoaded:true,
-			data:news.articles
+		.then((news)=>{
+			this.setState({
+		  		isLoaded:true,
+				data:news.articles
 			
 	  // News Fetching function
 		});});
@@ -48,12 +54,12 @@ export default class Content extends Component {
 		getLocation = () => {
 			if(navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(position => {
-						console.log(position);
-						let gloc=position.coords;
-						this.setState({
-							lat:position.coords.latitude,
-							lgi:position.coords.longitude
-						});
+									console.log(position);
+									let gloc=position.coords;
+									this.setState({
+													lat:position.coords.latitude,
+													lgi:position.coords.longitude
+									});
 				});
 		} else {
 				console.error("Geolocation is not supported by this browser!");
@@ -70,32 +76,47 @@ export default class Content extends Component {
 		
 		this.getLocation();
 		this.newsData();
-		// this.setState({
-		// 	isLoaded:true,
-		// 	lat:locat.coords.latitude,
-		// 	logi:locat.coords.longitude
-		
-		//   });
 
 	}
 
 	render(){
 		
-		
 		return(
-			<div>
-				<p>The content goes hear</p>
-				<h2>user Lang: {this.state.usrlang}</h2>
-				<Weather latt={this.state.lat} long={this.state.lgi}/>
-				<form onSubmit={this.getNews}>
-					<input type='text' onChange={this.changeText} />
-					<button>search</button>
-				</form>
-				<Ncard />
-				<h2>Latitude:{this.state.lat}</h2>
-				{this.state.data.map((item,index) => {return (<h2 key={index}>{item.title}</h2>);})}
+			<Row className="justify-content-md-center">
+				<Col md={12}>
 				
-			</div>
+				
+				<Jumbotron>
+				<Weather latt={this.state.lat} long={this.state.lgi}/>
+				</Jumbotron>
+				
+				</Col>
+				<Col md={12}>
+					<h2 >News Feed</h2>
+				<Form onSubmit={this.getNews}>
+					<input type='text' onChange={this.changeText} />
+					<Button varient="primary" type="submit">search</Button>
+				</Form>
+				
+				<Row>
+					
+				</Row>
+				{(this.state.isLoaded)? this.state.data.map((item,index) => {
+					return (<Ncard key={index} 
+						title={item.title} 
+						dis={item.desc} 
+						link={item.link} 
+						img={item.image}></Ncard>);
+					}
+					) : <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> }
+				{}
+				
+				
+				</Col>
+
+				
+				
+			</Row>
 			);
 	}
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Card,ListGroup,Spinner,Alert} from 'react-bootstrap';
 export default class Weather extends Component {
     constructor(){
         super();
@@ -21,30 +21,38 @@ export default class Weather extends Component {
 		.then((response)=>{return response.json();})
         .then((locat)=>{console.log(locat);
             this.setState({
-                
+                isLoaded:true,
                 weather:locat.weather,
                 main:locat.main,
                 wind:locat.wind,
                 sys:locat.sys,
                 location:locat.name
             });
-        });
+        })
+        .catch((error)=>{console.log(error)});
 		
 		// Weather Fetching function
       }
-      componentWillReceiveProps(){
-          
-          this.weatherApi();
+
+      componentDidMount(){
+        this.weatherApi();
       }
     render(){
+       
         return(
-            <div>
-                <h2>Weather</h2>
-                <p>your current weather info</p>
-                <h3>Temp: {Math.floor(((this.state.main.temp)-273.15)*100)/100}&deg;C</h3>
-                <h3>City : {this.state.location}</h3>
-                <h3>Country : {this.state.sys.country}</h3>
-            </div>
+            <Card>
+                {(this.state.isLoaded)? 
+                    <Card.Body>
+                    <h2 style={{fontFamily:'Anton'}}>WEATHER</h2>
+                    <ListGroup>
+                        <ListGroup.Item>Temp: <strong>{Math.floor(((this.state.main.temp)-273.15)*100)/100}&deg;C</strong> - {this.state.weather[0].main}</ListGroup.Item>
+                        <ListGroup.Item>City : {this.state.location}</ListGroup.Item>
+                        <ListGroup.Item>Country : {this.state.sys.country}</ListGroup.Item>
+                    </ListGroup>
+                    </Card.Body>:
+                    <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
+                }
+            </Card>
         );
     }
 }

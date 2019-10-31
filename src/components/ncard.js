@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import {Card} from 'react-bootstrap';
 const cd={
-    margin: 15,
-    padding: 10
+    margin:'10px auto',
+    boxSizing:'border-box',
+    minHeight:200,overflow:'hidden',borderRadius:8,
+    boxShadow:'0px 8px 15px #e5e8e8'
+}
+const head={
+    width:'100%',
+    backgroundColor:'#3498db ',
+    position:'relative',
+    minHeight:'50px',
+    fontFamily:'Bitter',
+    padding:10,
+    color:'#fff'
 }
 const im={
     width: 150,
@@ -14,20 +25,15 @@ export default class Ncard extends Component {
     render(){
         
         return(
-            <Card border="info" className="justify-content-md-center" style={{height:350,marginBottom:10,overflow:'normal',borderRadius:20}}>
-                
-                <Card.Body>
-                <Card.Title style={{display:'flex'}}>
-                     <h4 style={{fontFamily:'Bitter',width:'100%',color:'#000'}}>{this.props.title}</h4>
-                </Card.Title> 
-                {(this.props.img)?<Card.Img variant="top" style={im} src={this.props.img}/>:
-                <div style={{width:150,height:150,backgroundColor:'#b7b7b7'}}><h4 style={{color:'#7a7a7a',padding:40}}>No Image</h4></div>}
-
-                <Card.Text style={{fontFamily:'Yanone Kaffeesatz',marginTop:5}}>{this.props.dis}</Card.Text>
-                <Card.Link href={this.props.link}>Get Full News</Card.Link>
-                </Card.Body>
-
-            </Card>
+            <div style={cd}>
+                <h4 style={head}>{this.props.title}</h4>
+                {(this.props.img) &&<Card.Img variant="top" style={im} src={this.props.img}/>}
+                <p style={{fontFamily:'Yanone Kaffeesatz',marginTop:'auto',padding:10}}>{this.props.dis}</p>
+                <a onClick={(e)=>{window.open(this.props.link,'_blank')}} style={{
+                    padding:10,fontWeight:700
+                }}>Read More</a>
+            </div>
+            
         );
     }
 }

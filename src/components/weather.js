@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Card,ListGroup,Spinner,Alert} from 'react-bootstrap';
+import apikey from './apikey'
 export default class Weather extends Component {
     constructor(){
         super();
@@ -15,7 +16,7 @@ export default class Weather extends Component {
     weatherApi = () => {
         let lat=this.props.latt;
         let longi=this.props.long;
-		const key ='e58a8894aea9922d2c2c6685e502e1a2';
+		const key =apikey.openweather;
 		
 		fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${longi}&APPID=${key}`)
 		.then((response)=>{return response.json();})

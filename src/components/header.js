@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-
+import './App.css';
 export default class Header extends Component {
 	render(){
 		return(
-			<div style={{backgroundColor:'#7386d5',height:50,marginBottom:10}}>
+			<div className='header'>
 				<h2 style={{textAlign:'center',paddingTop:6,fontFamily:'Anton',color:'#fff'}}>NEWS FEED</h2>
+				<button className='btn-weather'>Weather</button>
 			</div>
 			);
 	}

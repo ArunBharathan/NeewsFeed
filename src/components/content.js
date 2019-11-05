@@ -27,13 +27,8 @@ export default class Content extends Component {
   };
 
   getNews = e => {
-    this.state.sqry === ""
-      ? alert("Oops you missed something!")
-      : e.preventDefault();
-    this.setState({
-      isLoaded: false
-    });
-    this.newsData();
+    e.preventDefault();
+    this.state.sqry === ""? alert("Oops you missed something!"):(this.setState({isLoaded: false}),this.newsData())
   };
 
   newsData = () => {
@@ -133,7 +128,7 @@ export default class Content extends Component {
               style={{
                 textAlign: "center",
                 fontWeight: 40,
-                marginTop: 20,
+                margin:'auto',
                 color: "#ffff",
                 fontFamily: "Anton"
               }}>News Updates </h2>

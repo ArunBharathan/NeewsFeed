@@ -53,6 +53,7 @@ export default class Weather extends Component {
                     </Card.Body>:
                     <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
                 }
+                
             </Card>
         );
     }
